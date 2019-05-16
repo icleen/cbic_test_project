@@ -97,12 +97,12 @@ def combine_imgs(img1, img2, affine):
 
 
 def main():
-    bef = "test_data/2D_registration/correspondence2D_w0.txt"
-    aft = "test_data/2D_registration/correspondence2D_w1.txt"
+    bef = "test_data/2D_registration/correspondence2D_w0.txt" \
+        if len(sys.argv) < 2 else sys.argv[1]
+    aft = "test_data/2D_registration/correspondence2D_w1.txt" \
+        if len(sys.argv) < 3 else sys.argv[2]
     # bef = "test_data/3D_registration/correspondence3D_0.txt"
     # aft = "test_data/3D_registration/correspondence3D_1.txt"
-    # bef = "taffine_test1.txt"
-    # aft = "taffine_test2.txt"
     bef = read_points(bef)
     aft = read_points(aft)
     assert len(bef) == len(aft)
@@ -110,45 +110,12 @@ def main():
     assert len(bef) >= pt_dim
 
     affine = get_affine(bef, aft)
+    print('affine:', affine)
 
-    img1 = 'test_data/2D_registration/w0.png'
-    img2 = 'test_data/2D_registration/w1.png'
-    combine_imgs(img1, img2, affine)
-
-    # imgt1 = img1.transform((img1.size[0], img1.size[1]),
-    #     Image.AFFINE, data=affine.flatten()[:6], resample=Image.NEAREST)
-    # plt.imshow(np.asarray(imgt1))
-    # plt.show()
-
-
-
-    # pts = np.zeros((len(bef)*2, pt_dim*2))
-    # pts_prime = np.zeros((len(bef)*(pt_dim-1),))
-    # for i in range(3):
-    #     j = i*2
-    #     k = j+1
-    #     pts[j,0] = bef[i][0]
-    #     pts[j,1] = bef[i][1]
-    #     pts[j,2] = 1
-    #     pts[k,3] = bef[i][0]
-    #     pts[k,4] = bef[i][1]
-    #     pts[k,5] = 1
-    #
-    #     pts_prime[j] = aft[i][0]
-    #     pts_prime[k] = aft[i][1]
-    #
-    # print('shapes:',pts.shape, pts_prime.shape)
-    # print('pts:',pts)
-    # print('pts_prime:',pts_prime)
-    # ptsi = np.linalg.inv(pts)
-    # print('ptsi:',ptsi.shape)
-    # a = np.dot(ptsi, pts_prime)
-    # print('a.shape:',a.shape)
-    # print('a:',a)
-    #
-    # b = np.matmul(pts, a)
-    # print('b.shape:',b.shape)
-    # print('b:',b)
+    if len(sys.argv) < 2:
+        img1 = 'test_data/2D_registration/w0.png'
+        img2 = 'test_data/2D_registration/w1.png'
+        combine_imgs(img1, img2, affine)
 
 
 if __name__ == '__main__':
