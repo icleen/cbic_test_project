@@ -16,7 +16,7 @@ def read_input(file):
             assert 'dependencies' in line
             deps = line.split('dependencies:')[-1].strip()
             deps = deps.split('), (')
-            deps = [dep.strip('()').split(', ', 2) for dep in deps]
+            deps = [dep.strip('()').split(', ', 2) for dep in deps if len(dep) > 1]
             insts.append( (projs, deps) )
 
     return insts
@@ -26,10 +26,6 @@ def find_build_order(projs, deps):
     buildo = []
     last = len(buildo)
     while len(projs) > 0:
-        # print(projs)
-        # print(deps)
-        # print(buildo)
-        # input('...')
         depchart = {}
         for p in projs:
             depchart[p] = False
@@ -49,6 +45,11 @@ def find_build_order(projs, deps):
 
 
 def find_build_order2(projs, deps):
+    """
+    This is my algorithm for finding the build order of a dependency graph.
+    Note that it is comporable to the above algorithm, but different in
+    its implementation.
+    """
     buildo = []
     last = len(buildo)
     depchart = {}
@@ -58,9 +59,6 @@ def find_build_order2(projs, deps):
             if p == d[1]:
                 depchart[p].append(d[0])
     while len(projs) > len(buildo):
-        # print(depchart)
-        # print(buildo)
-        # input('...')
         for key in depchart:
             if len(depchart[key]) < 1 and key not in buildo:
                 buildo.append(key)
@@ -76,11 +74,8 @@ def main():
     deps_file = "deps_test1.txt"
     dep_projs = read_input(deps_file)
     for dp in dep_projs:
-        # buildo = find_build_order(*dp)
-        # print('final buildo:', buildo)
         buildo = find_build_order2(*dp)
         print('final build order:', buildo)
-        # input('...')
 
 if __name__ == '__main__':
     main()
