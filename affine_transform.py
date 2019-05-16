@@ -66,24 +66,34 @@ def get_affine(bef, aft):
 def combine_imgs(img1, img2, affine):
     img1 = Image.open(img1)
     img2 = Image.open(img2)
-    nwidth = 900
-    nheight = 500
+
+    nwidth = img1.size[0] + img2.size[0]
+    nheight = img1.size[1] + img2.size[1]
 
     imgt2 = img2.transform((nwidth, nheight),
         Image.AFFINE, data=affine.flatten()[:6], resample=Image.NEAREST)
     imgt2 = np.asarray(imgt2)
 
     result = np.zeros((nheight, nwidth))
-
     result += imgt2
+    result[:img1.size[1], :img1.size[0]] = 0
+
     imgt1 = np.asarray(img1)
     shp = ((0, nheight-imgt1.shape[0]), (0, nwidth-imgt1.shape[1]))
     imgt1 = np.pad(imgt1, shp,
         'constant', constant_values=0)
     result += imgt1
 
-    plt.imshow(result)
-    plt.show()
+    i, j = result.shape[0]-1, result.shape[1]-1
+    while result[i,0] < 1:
+        i -= 1
+    while result[0,j] < 1:
+        j -= 1
+
+    result = result[:i, :j]
+    plt.imsave('combined.png', result)
+    # plt.imshow(result)
+    # plt.show()
 
 
 def main():
