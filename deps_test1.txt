@@ -1,0 +1,23 @@
+# tests their basic dependency graph (output: e, f, a, b, d, c)
+projects: a, b, c, d, e, f
+dependencies: (a, d), (f, b), (b, d), (f, a), (d, c)
+
+# tests another random dependency graph (output: f, g, e, a, c, d, b)
+projects: a, b, c, d, e, f, g
+dependencies: (e, a), (c, b), (d, b), (e, c), (e, d), (f, e), (g, e)
+
+# tests a third dependency graph (output: a, b, c)
+projects: a, b, c
+dependencies: (a, b), (a, c), (b, c)
+
+# tests everything dependent on one (output: a, b, c, d, e)
+projects: a, b, c, d, e
+dependencies: (a, b), (a, c), (a, d), (a, e)
+
+# tests no dependencies (output: a, b, c, d, e)
+projects: a, b, c, d, e
+dependencies: 
+
+# tests cyclic graph (should fail)
+projects: a, b, c
+dependencies: (a, b), (b, c), (c, a)
