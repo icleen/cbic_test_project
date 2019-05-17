@@ -97,12 +97,15 @@ def combine_imgs(img1, img2, affine):
 
 
 def main():
-    bef = "test_data/2D_registration/correspondence2D_w0.txt" \
-        if len(sys.argv) < 2 else sys.argv[1]
-    aft = "test_data/2D_registration/correspondence2D_w1.txt" \
-        if len(sys.argv) < 3 else sys.argv[2]
-    # bef = "test_data/3D_registration/correspondence3D_0.txt"
-    # aft = "test_data/3D_registration/correspondence3D_1.txt"
+    if len(sys.argv) == 2:
+        bef = "test_data/3D_registration/correspondence3D_1.txt"
+        aft = "test_data/3D_registration/correspondence3D_2.txt"
+    elif len(sys.argv) == 3:
+        bef = sys.argv[1]
+        aft = sys.argv[2]
+    else:
+        bef = "test_data/2D_registration/correspondence2D_w0.txt"
+        aft = "test_data/2D_registration/correspondence2D_w1.txt"
     bef = read_points(bef)
     aft = read_points(aft)
     assert len(bef) == len(aft)

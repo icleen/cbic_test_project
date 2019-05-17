@@ -3,9 +3,7 @@ import numpy as np
 from scipy import misc
 from scipy import ndimage
 
-def read_images():
-    img1_path = "test_data/diff_test/test_image_1.png"
-    img2_path = "test_data/diff_test/test_image_2.png"
+def read_images(img1_path, img2_path):
     img1 = misc.imread(img1_path)
     img2 = misc.imread(img2_path)
     return img1, img2
@@ -86,14 +84,27 @@ def IOU_grayscale(img1, img2):
     return iou
 
 
+# def test_answer():
+#     img1, img2 = read_images()
+#     iou = IOU_color(img1, img2)
+#     assert 0.5661838077687669 == iou
+#     iou = IOU_grayscale(img1, img2)
+#     assert 0.6351188486031304 == iou
+
 
 def main():
-    img1, img2 = read_images()
 
+    img1_path = "test_data/diff_test/test_image_1.png"
+    img2_path = "test_data/diff_test/test_image_2.png"
+    if len(sys.argv) > 2:
+        img1_path = sys.argv[1]
+        img2_path = sys.argv[2]
+    img1, img2 = read_images(img1_path, img2_path)
     iou = IOU_color(img1, img2)
     print('iou of color images:', iou)
     iou = IOU_grayscale(img1, img2)
     print('iou of grayscale images:', iou)
+
 
 if __name__ == '__main__':
     main()

@@ -72,6 +72,8 @@ def find_build_order2(projs, deps):
 
 def main():
     deps_file = "deps_test1.txt"
+    if len(sys.argv) > 1:
+        deps_file = sys.argv[1]
     dep_projs = read_input(deps_file)
     for dp in dep_projs:
         buildo = find_build_order2(*dp)
